@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>I Love </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Nunito:wght@700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROb8cIDQrzAZxhH0XcV8orPiAlKxk2UuPfrYxRWj-I9ZJmQAdwqNLZ8OA&s=10') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chu-bay-mau {
+            background: linear-gradient(to bottom, #ffffff 10%, #ff1f5a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        #khung-app {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .vung-chua {
+            flex: 1;
+            position: relative;
+            width: 100%;
+        }
+
+        .man-hinh {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px 20px 110px 20px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .man-hinh.dang-mo {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            display: block;
+        }
+
+        .lop-kinh {
+            background: rgba(255, 192, 203, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 35px;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.2);
+        }
+
+        .thanh-bam {
+            position: absolute;
+            bottom: 25px;
+            left: 20px;
+            right: 20px;
+            height: 75px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nut-bam {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .nut-bam img {
+            width: 30px;
+            height: 30px;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+        }
+
+        .nut-bam.active {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .tieu-de {
+            font-family: 'Pacifico', cursive;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .khu-dem {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 25px;
+        }
+
+        .o-so {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 15px 0;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .o-so span {
+            display: block;
+            font-size: 26px;
+            font-family: 'Nunito', sans-serif;
+            color: #fff;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .o-so small {
+            font-size: 14px;
+            color: #fff;
+            text-transform: uppercase;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .doi-lua {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 45px;
+            padding: 0 10px;
+        }
+
+        .vung-anh {
+            text-align: center;
+            flex: 1;
+        }
+
+        .anh-tron {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin: 0 auto 12px;
+            position: relative;
+        }
+
+        .tim-giua {
+            width: 80px;
+            height: 80px;
+            background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+            background-size: contain;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: dap-thinh 1s infinite;
+            position: relative;
+        }
+
+        @keyframes dap-thinh {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.3); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.2); }
+            60% { transform: scale(1); }
+        }
+
+        .chu-ngay {
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .giay-viet {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            padding: 30px;
+            min-height: 420px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        textarea {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: 'Dancing Script', cursive;
+            font-size: 22px;
+            line-height: 1.8;
+            color: #ff1f5a;
+            outline: none;
+            margin-top: 20px;
+        }
+
+        .nut-luu {
+            background: linear-gradient(135deg, #ff758f 0%, #ffacbe 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            margin-top: 25px;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,117,143,0.4);
+        }
+
+        #nen-tim {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="nen-tim"></canvas>
+
+    <div id="khung-app">
+        <div class="vung-chua">
+            
+            <section class="man-hinh dang-mo" id="man-0">
+                <h1 class="tieu-de chu-bay-mau">I Love You</h1>
+                <div class="lop-kinh">
+                    <div class="khu-dem">
+                        <div class="o-so"><span id="nam">0</span><small>Năm</small></div>
+                        <div class="o-so"><span id="thang">0</span><small>Tháng</small></div>
+                        <div class="o-so"><span id="tuan">0</span><small>Tuần</small></div>
+                        <div class="o-so"><span id="ngay">0</span><small>Ngày</small></div>
+                    </div>
+                    <div style="text-align:center; padding-bottom: 25px; font-size: 24px;" class="chu-bay-mau">
+                        10/12/2025 | <span id="dong-ho">00:00:00</span>
+                    </div>
+                </div>
+
+                <div class="doi-lua">
+                    <div class="vung-anh">
+                        <div class="anh-tron" id="anh-trai" style="background-image: url('https://cdn.upanhlaylink.com/i/u3yyxren.jpg')" onclick="doiAnh('trai')"></div>
+                        <h2 class="chu-bay-mau" style="font-size: 28px;">Minh Quân</h2>
+                    </div>
+                    <div class="tim-giua">
+                        <span class="chu-ngay" id="tong-ngay">0</span>
+                    </div>
+                    <div class="vung-anh">
+                        <div class="anh-tron" id="anh-phai" style="background-image: url('https://cdn.upanhlaylink.com/i/AMYcX3U0.jpg')" onclick="doiAnh('phai')"></div>
+                        <h2 class="chu-bay-mau" style="font-size: 28px;">Kiều Thơm</h2>
+                    </div>
+                </div>
+            </section>
+
+            <section class="man-hinh" id="man-1">
+                <div class="lop-kinh" style="margin-top: 100px; padding: 50px 20px; text-align: center;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3656/3656831.png" style="width: 90px; margin-bottom: 25px;">
+                    <h2 class="chu-bay-mau" style="font-size: 34px;">Ngày yêu nhau</h2>
+                    <h1 class="chu-bay-mau" style="font-size: 50px; margin: 25px 0;">10 / 12 / 2026</h1>
+                    <p class="chu-bay-mau" style="font-size: 22px;">Mãi bên nhau bạn nhé!</p>
+                </div>
+            </section>
+
+            <section class="man-hinh" id="man-2">
+                <h1 class="tieu-de chu-bay-mau">Kỷ Niệm Tụi Mình</h1>
+                <div id="danh-sach-ky-niem"></div>
+            </section>
+
+            <section class="man-hinh" id="man-3">
+                <div class="giay-viet">
+                    <div style="text-align:center;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/9101/9101294.png" style="width: 70px;">
+                        <h2 class="chu-bay-mau" style="font-size: 32px; margin-top: 10px;">Viết Nhật Ký</h2>
+                        <p id="ngay-thang" style="color: #ff1f5a; font-size: 20px;"></p>
+                    </div>
+                    <div style="width: 130px; height: 130px; margin: 25px auto; border-radius: 20px; border: 2.5px dashed #ff758f; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff5f7;" onclick="document.getElementById('chon-file').click()">
+                        <img id="anh-xem-truoc" src="" style="display:none; width: 100%; height: 100%; object-fit: cover;">
+                        <img id="icon-cam" src="https://cdn-icons-png.flaticon.com/512/685/685655.png" style="width: 45px; opacity: 0.4;">
+                    </div>
+                    <input type="file" id="chon-file" hidden accept="image/*" onchange="xemAnh(this)">
+                    <textarea id="noi-dung" placeholder="Ghi lại điều hạnh phúc hôm nay..."></textarea>
+                    <button class="nut-luu" onclick="luuLai()">Lưu vào trái tim</button>
+                </div>
+            </section>
+
+        </div>
+
+        <nav class="thanh-bam lop-kinh">
+            <div class="nut-bam active" onclick="chuyenMan(0)"><img src="https://cdn-icons-png.flaticon.com/512/2544/2544087.png"></div>
+            <div class="nut-bam" onclick="chuyenMan(1)"><img src="https://cdn-icons-png.flaticon.com/512/2618/2618251.png"></div>
+            <div class="nut-bam" onclick="chuyenMan(2)"><img src="https://cdn-icons-png.flaticon.com/512/3126/3126501.png"></div>
+            <div class="nut-bam" onclick="chuyenMan(3)"><img src="https://cdn-icons-png.flaticon.com/512/1162/1162283.png"></div>
+        </nav>
+    </div>
+
+    <script>
+        const mocNgay = new Date('2025-12-10T00:00:00');
+        const giayPhep = document.getElementById('nen-tim');
+        const but = giayPhep.getContext('2d');
+        let bongBong = [];
+
+        function kichThuoc() {
+            giayPhep.width = window.innerWidth;
+            giayPhep.height = window.innerHeight;
+        }
+        window.onresize = kichThuoc;
+        kichThuoc();
+
+        class TimBay {
+            constructor() { this.taoMoi(); }
+            taoMoi() {
+                this.x = Math.random() * giayPhep.width;
+                this.y = giayPhep.height + 20;
+                this.size = Math.random() * 15 + 10;
+                this.speed = Math.random() * 1.2 + 0.6;
+                this.alpha = Math.random() * 0.7 + 0.3;
+            }
+            ve() {
+                but.globalAlpha = this.alpha;
+                but.fillStyle = '#ffffff';
+                but.font = this.size + 'px serif';
+                but.fillText('❤', this.x, this.y);
+            }
+            capNhat() {
+                this.y -= this.speed;
+                if(this.y < -30) this.taoMoi();
+            }
+        }
+
+        for(let i=0; i<35; i++) bongBong.push(new TimBay());
+
+        function chay() {
+            but.clearRect(0,0, giayPhep.width, giayPhep.height);
+            bongBong.forEach(b => { b.capNhat(); b.ve(); });
+            requestAnimationFrame(chay);
+        }
+        chay();
+
+        function tinhToan() {
+            const hienTai = new Date();
+            const chenhLech = hienTai - mocNgay;
+            const sNgay = Math.floor(chenhLech / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('tong-ngay').innerText = sNgay;
+            document.getElementById('nam').innerText = Math.floor(sNgay / 365);
+            document.getElementById('thang').innerText = Math.floor((sNgay % 365) / 30);
+            document.getElementById('tuan').innerText = Math.floor((sNgay % 30) / 7);
+            document.getElementById('ngay').innerText = sNgay % 7;
+            document.getElementById('dong-ho').innerText = hienTai.toLocaleTimeString('en-GB');
+        }
+        setInterval(tinhToan, 1000);
+        tinhToan();
+
+        function chuyenMan(n) {
+            document.querySelectorAll('.man-hinh').forEach((m, i) => m.classList.toggle('dang-mo', i === n));
+            document.querySelectorAll('.nut-bam').forEach((nut, i) => nut.classList.toggle('active', i === n));
+            if(n === 2) taiDuLieu();
+            if(n === 3) document.getElementById('ngay-thang').innerText = new Date().toLocaleDateString('vi-VN', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+        }
+
+        function doiAnh(ben) {
+            const link = prompt("Nhập link ảnh mới:");
+            if(link) document.getElementById('anh-' + ben).style.backgroundImage = `url('${link}')`;
+        }
+
+        function xemAnh(input) {
+            if (input.files && input.files[0]) {
+                const doc = new FileReader();
+                doc.onload = e => {
+                    document.getElementById('anh-xem-truoc').src = e.target.result;
+                    document.getElementById('anh-xem-truoc').style.display = 'block';
+                    document.getElementById('icon-cam').style.display = 'none';
+                };
+                doc.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function luuLai() {
+            const txt = document.getElementById('noi-dung').value;
+            const img = document.getElementById('anh-xem-truoc').src;
+            if(!txt) return;
+
+            const kho = JSON.parse(localStorage.getItem('love_memories') || '[]');
+            kho.unshift({ text: txt, pic: img.startsWith('data') ? img : null, date: new Date().toLocaleDateString('vi-VN') });
+            localStorage.setItem('love_memories', JSON.stringify(kho));
+            
+            document.getElementById('noi-dung').value = '';
+            document.getElementById('anh-xem-truoc').style.display = 'none';
+            document.getElementById('icon-cam').style.display = 'block';
+            chuyenMan(2);
+        }
+
+        function taiDuLieu() {
+            const ds = document.getElementById('danh-sach-ky-niem');
+            const kho = JSON.parse(localStorage.getItem('love_memories') || '[]');
+            ds.innerHTML = kho.map(k => `
+                <div class="lop-kinh" style="padding:25px; margin-bottom:20px;">
+                    <p style="color:#ff1f5a; font-weight:800; font-size:18px; margin-bottom:12px;">📅 ${k.date}</p>
+                    <p style="font-size:24px; line-height:1.5; color:#444; font-weight:700;">${k.text}</p>
+                    ${k.pic ? `<img src="${k.pic}" style="width:100%; border-radius:20px; margin-top:20px; border:4px solid #fff; box-shadow:0 10px 20px rgba(0,0,0,0.1);">` : ''}
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

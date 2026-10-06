@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HenryDev - Thông Tin Thanh Toán</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --card:transparent;              /* ✅ nền card trong suốt */
+  --border:rgba(255,255,255,0.1);
+  --accent:#00f2ea;
+  --accent-2:#ff0050;
+  --txt:#ffffff;
+  --txt-dim:rgba(255,255,255,0.5);
+  --grad:linear-gradient(135deg,#00f2ea,#008cff);
+  --shadow-color:rgba(0,0,0,0.8);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;user-select:none;-webkit-tap-highlight-color:transparent}
+
+/* ✅ NỀN TRONG SUỐT */
+html,body{
+  background:transparent;
+  font-family:'Space Grotesk',sans-serif;
+  color:var(--txt);
+  overflow:hidden;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;filter:blur(0px)}
+
+.wrapper{width:100%;max-width:400px;padding:20px;perspective:1000px;z-index:10}
+
+/* ✅ CARD TRONG SUỐT (không blur, không nền) */
+.main-card{
+  background:transparent;
+  border:1px solid var(--border);
+  border-radius:32px;
+  padding:40px 25px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.02) inset,
+             0 30px 60px -20px var(--shadow-color);
+  transition:transform 0.1s, border-color 0.5s, box-shadow 0.5s;
+}
+.main-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0.6;
+}
+
+.avt-box{width:120px;height:120px;margin:0 auto 25px;position:relative;display:flex;justify-content:center;align-items:center}
+.avt-img{width:96px;height:96px;border-radius:50%;object-fit:cover;z-index:2;border:2px solid var(--border);box-shadow:0 10px 30px rgba(0,242,234,0.15)}
+.orbit-svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;animation:spin 6s linear infinite}
+.orbit-path{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:100 200}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.header{text-align:center;margin-bottom:35px}
+.name{font-size:28px;font-weight:700;margin-bottom:6px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase;letter-spacing:1px}
+.role{font-size:12px;color:var(--txt-dim);letter-spacing:3px;text-transform:uppercase;font-weight:500}
+
+.list{display:flex;flex-direction:column;gap:14px}
+
+/* ✅ pay-item cũng trong suốt, chỉ giữ viền + hiệu ứng hover */
+.pay-item{
+  display:flex;align-items:center;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  padding:14px 16px;border-radius:20px;
+  transition:0.3s cubic-bezier(0.2,0.8,0.2,1);
+  cursor:pointer;position:relative;overflow:hidden;
+}
+.pay-item:hover{background:rgba(255,255,255,0.06);transform:translateY(-2px);border-color:rgba(0,242,234,0.3);box-shadow:0 10px 20px -5px rgba(0,242,234,0.15)}
+.pay-item:active{transform:scale(0.98)}
+.icon-box{width:42px;height:42px;border-radius:12px;background:#fff;padding:3px;display:flex;justify-content:center;align-items:center;margin-right:15px;flex-shrink:0}
+.icon-box img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+.info{flex:1;overflow:hidden}
+.bank-l{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;margin-bottom:3px;letter-spacing:0.5px}
+.acc-n{font-size:15px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.copy-icon{width:32px;height:32px;display:flex;justify-content:center;align-items:center;color:rgba(255,255,255,0.3);transition:0.3s}
+.pay-item:hover .copy-icon{color:var(--accent)}
+
+.toast{position:fixed;bottom:40px;left:50%;transform:translate(-50%,100px);background:rgba(0,242,234,0.1);backdrop-filter:blur(10px);border:1px solid rgba(0,242,234,0.3);padding:12px 28px;border-radius:100px;color:var(--accent);font-weight:600;font-size:13px;opacity:0;transition:0.5s cubic-bezier(0.19,1,0.22,1);z-index:100;box-shadow:0 10px 30px -10px rgba(0,242,234,0.3);display:flex;align-items:center;gap:8px}
+.toast.active{transform:translate(-50%,0);opacity:1}
+@media(max-width:480px){.main-card{padding:30px 20px}.name{font-size:24px}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="wrapper">
+<div class="main-card" id="card">
+<div class="avt-box">
+<svg class="orbit-svg" viewBox="0 0 100 100">
+<circle class="orbit-path" cx="50" cy="50" r="48"></circle>
+</svg>
+<img src="https://cdn.upanhlaylink.com/i/HVqI9cQV.png" alt="User" class="avt-img">
+</div>
+<div class="header">
+<div class="name" data-val="VLADIMIR CNC">HenryDev</div>
+<div class="role">Thông Tin Thanh Toán</div>
+</div>
+<div class="list">
+<div class="pay-item" onclick="cp('0353267411')">
+<div class="icon-box"><img src="https://developers.momo.vn/v3/assets/images/MOMO-Logo-App-6262c3743a290ef02396a24ea2b66c35.png" alt="Momo"></div>
+<div class="info"><div class="bank-l">MoMo</div><div class="acc-n">0353267411</div></div>
+<div class="copy-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2"/></svg></div>
+</div>
+<div class="pay-item" onclick="cp('0353267411')">
+<div class="icon-box"><img src="https://play-lh.googleusercontent.com/M9OvPTmGRRtq40m0WtVRC7v5Rc4bNxj_IliowQSOm-oi2bLmnxsQcgqO-6ajUIQ2f-U" onerror="this.src='https://cdn.haitrieu.com/wp-content/uploads/2022/02/Logo-MB-Bank-MBB.png'" alt="MB"></div>
+<div class="info"><div class="bank-l">MBBank</div><div class="acc-n">0353267411</div></div>
+<div class="copy-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2"/></svg></div>
+</div>
+</div>
+</div>
+</div>
+<div class="toast" id="ts"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy success</div>
+<script>
+const cvs=document.getElementById('bg'),ctx=cvs.getContext('2d'),dpr=window.devicePixelRatio||1;
+let w,h,pts=[];
+function init(){w=cvs.width=window.innerWidth*dpr;h=cvs.height=window.innerHeight*dpr;ctx.scale(dpr,dpr);pts=[];for(let i=0;i<40;i++)pts.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,s:Math.random()*2+1})}
+function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';ctx.lineWidth=.5;
+pts.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>window.innerWidth)p.vx*=-1;if(p.y<0||p.y>window.innerHeight)p.vy*=-1;
+ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,Math.PI*2);ctx.fill();
+for(let j=i+1;j<pts.length;j++){let dx=p.x-pts[j].x,dy=p.y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+if(d<150){ctx.beginPath();ctx.strokeStyle=`rgba(0,242,234,${1-d/150})`;ctx.moveTo(p.x,p.y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke()}}});
+requestAnimationFrame(draw)}
+window.onresize=init;init();draw();
+class Scramble{constructor(el){this.el=el;this.chars='!<>-_\\/[]{}—=+*^?#________';this.update=this.update.bind(this)}
+setText(newText){const old=this.el.innerText,len=Math.max(old.length,newText.length),p=new Promise(r=>this.resolve=r);this.queue=[];for(let i=0;i<len;i++){const from=old[i]||'',to=newText[i]||'',start=Math.floor(Math.random()*40),end=start+Math.floor(Math.random()*40);this.queue.push({from,to,start,end})}cancelAnimationFrame(this.frameRequest);this.frame=0;this.update();return p}
+update(){let out='',c=0;for(let i=0;i<this.queue.length;i++){let{from,to,start,end,char}=this.queue[i];if(this.frame>=end){out+=to;c++}else if(this.frame>=start){if(!char||Math.random()<0.28){char=this.chars[Math.floor(Math.random()*this.chars.length)];this.queue[i].char=char}out+=`<span style="color:#00f2ea">${char}</span>`}else{out+=from}}this.el.innerHTML=out;if(c===this.queue.length){this.resolve()}else{this.frameRequest=requestAnimationFrame(this.update);this.frame++}}}
+const el=document.querySelector('.name'),fx=new Scramble(el);fx.setText('VLADIMIR CNC');
+const c=document.getElementById('card');
+document.addEventListener('mousemove',e=>{if(window.innerWidth<768)return;const x=(e.clientX/window.innerWidth-0.5)*10,y=(e.clientY/window.innerHeight-0.5)*10;c.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`});
+document.addEventListener('mouseleave',()=>{c.style.transform='rotateY(0) rotateX(0)'});
+function cp(t){navigator.clipboard.writeText(t).then(()=>{const b=document.getElementById('ts');b.classList.add('active');setTimeout(()=>b.classList.remove('active'),2000)})}
+</script>
+</body>
+</html>
